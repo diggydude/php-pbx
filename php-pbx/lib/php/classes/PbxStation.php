@@ -33,7 +33,7 @@
 
      public function isBusy()
      {
-       return ($this->status > self::STATUS_ON_HOOK);
+       return ($this->status > self::STATUS_OFF_HOOK);
      } // isBusy
 
     public function __get($prop)
