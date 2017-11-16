@@ -17,7 +17,8 @@
 	
     protected
 	
-      $tone;
+      $tone,
+      $busy;
 	
     public static function instance($params = null)
     {
@@ -29,6 +30,8 @@
 	
     public function connect($station)
     {
+      $this->busy = true;
+      $this->setTone(self::TONE_DIAL);
       $this->execute('C,' . Pbx::instance()->getStation($station)->ordinal);
     } // connect
 
@@ -36,6 +39,7 @@
     {
       $this->setTone(self::TONE_NONE);
       $this->execute('D,0');
+      $this->busy = false;
     } // disconnect
 	
     public function setTone($tone)
@@ -52,11 +56,17 @@
           throw new Exception(__METHOD__ . ' > Unknown tone: ' . $tone);		
       }
     } // setTone
-  
+
+    public function isBusy()
+    {
+      return $this->busy;
+    } // isBusy
+
     protected function __construct($params)
     {
       parent::__construct($params->droid);
       $this->tone = self::TONE_NONE;
+      $this->busy = false;
     } // __construct
   
   } // PbxCallProgressTone

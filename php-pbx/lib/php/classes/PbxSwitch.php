@@ -26,28 +26,44 @@
     public function connect($caller, $callee)
     {
       $route = $this->getRoute($caller, $callee);
-      $this->markRouteBusy($route);
       $this->execute('C,' . $route->ax . ',' . $route->ay);
+      $this->markRouteBusy($route);
     } // connect
 
     public function disconnect($caller, $callee)
     {
       $route = $this->getRoute($caller, $callee);
-      $this->markRouteNotBusy($route);
       $this->execute('D,' . $route->ax . ',' . $route->ay);
+      $this->markRouteNotBusy($route);
     } // disconnect
+
+    public function findConnection($station)
+    {
+      $station = Pbx::instance()->getStation($station);
+      if ($station === null) {
+        throw new Exception(__METHOD__ . ' > Invalid station identifier.');
+      }
+      foreach ($this->routes as $caller => $callees) {
+        foreach ($callees as $callee => $connected) {
+          if ((($caller == $station->ordinal) || ($callee == $station->ordinal)) && ($connected == 1)) {
+            return (object) array('ax' => $caller, 'ay' => $callee);
+          }
+        }
+      }
+      return null;
+    } // findConnection
 
     public function getRoute($caller, $callee)
     {
-      $ax = Pbx::instance()->getStation($caller)->ordinal;
-      $ay = Pbx::instance()->getStation($callee)->ordinal;
-      if (($ax === null) || ($ay === null)) {
+      $caller = Pbx::instance()->getStation($caller);
+      $callee = Pbx::instance()->getStation($callee);
+      if (($caller === null) || ($callee === null)) {
         throw new Exception(__METHOD__ . ' > Invalid station identifier.');
       }
-      if ($ax == $ay) {
+      if ($caller->ordinal == $callee->ordinal) {
         throw new Exception(__METHOD__ . ' > Route from a station to itself not permitted.');
       }
-      return (object) array('ax' => $ax, 'ay' => $ay);
+      return (object) array('ax' => $caller->ordinal, 'ay' => $callee->ordinal);
     } // getRoute
 
     public function markRouteBusy($route)

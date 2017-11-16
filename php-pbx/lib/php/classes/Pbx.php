@@ -23,7 +23,7 @@
 
     public function getStation($station)
     {
-      return $this->stations[$station];
+      return (isset($this->stations[$station])) ? $this->stations[$station] : null;
     } // getTStaionByORidnal
 
     protected function __construct($params)
