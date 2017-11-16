@@ -1,6 +1,7 @@
 <?php
 
   require_once(__DIR__ . '/Droid.php');
+  require_once(__DIR__ . '/Pbx.php');
 
   class PbxSwitch extends Droid
   {
@@ -12,7 +13,6 @@
     protected
 
       $cache,
-      $stations,
       $routes;
 
     public static function instance($params = null)
@@ -23,22 +23,31 @@
        return self::$_instance;
     } // instance
 
-    public function connect($callerNumber, $calleeNumber)
+    public function connect($caller, $callee)
     {
-      $route = $this->getRoute($callerNumber, $calleeNumber);
+      $route = $this->getRoute($caller, $callee);
       $this->markRouteBusy($route);
       $this->execute('C,' . $route->ax . ',' . $route->ay);
     } // connect
 
-    public function getRoute($callerNumber, $calleeNumber)
+    public function disconnect($caller, $callee)
     {
-      if ($callerNumber == $calleeNumber) {
-        throw new Exception(__DIR__ . ' > Route from a station to itself not permitted.');
+      $route = $this->getRoute($caller, $callee);
+      $this->markRouteNotBusy($route);
+      $this->execute('D,' . $route->ax . ',' . $route->ay);
+    } // disconnect
+
+    public function getRoute($caller, $callee)
+    {
+      $ax = Pbx::instance()->getStation($caller)->ordinal;
+      $ay = Pbx::instance()->getStation($callee)->ordinal;
+      if (($ax === null) || ($ay === null)) {
+        throw new Exception(__METHOD__ . ' > Invalid station identifier.');
       }
-      return (object) array(
-               'ax' => $this->stations[$callerNumber],
-               'ay' => $this->stations[$calleeNumber]
-             );
+      if ($ax == $ay) {
+        throw new Exception(__METHOD__ . ' > Route from a station to itself not permitted.');
+      }
+      return (object) array('ax' => $ax, 'ay' => $ay);
     } // getRoute
 
     public function markRouteBusy($route)
@@ -65,25 +74,6 @@
         throw new Exception(__METHOD__ . ' > Instance of Cache required.');
       }
       $this->cache = $params->cache;
-      if (!$this->cache->exists('stations')) {
-        if (!file_exists($params->ConfigFile)) {
-          throw new Exception(__METHOD__ . ' > Configuration file "' . $params->configFile . '" not found.');
-        }
-        $stations = array();
-        $lines    = file($params->configFile);
-        foreach ($lines as $line) {
-          list($ordinal, $number) = explode("\t", trim($line));
-          if (($ordinal < 0) || ($ordinal > 7)) {
-            throw new Exception(__METHOD__ . ' > Ordinal must be between 0 and 7.');
-          }
-          if (!is_int($number) || (strlen((string) $number) !== 4)) {
-            throw new Exception(__METHOD__ . ' > Number must be a 4-digit integer.');
-          }
-          $this->stations[$number] = $ordinal;
-        }
-        $this->cache->set('stations', $stations);
-      }
-      $this->stations = $this->cache->get('stations');
       if (!$this->cache->exists('routes')) {
         $routes = array();
         for ($x = 0; $x < 8; $x++) {
