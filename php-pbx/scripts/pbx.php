@@ -94,7 +94,14 @@
       else {
         switch ($station->status) {
           case PbxStation::STATUS_ON_HOOK:
+            break;
           case PbxStation::STATUS_RINGING:
+            if ($ringer->status == PbxRinger::STATUS_TIMED_OUT) {
+              $ringer->disconnect();
+              $pbx->getStation($tone->station)->setStatus(PbxStation::STATUS_OFF_HOOK);
+              $tone->disconnect();
+              $station->setStatus(PbxStation::STATUS_ON_HOOK);
+            }
             break;
           case PbxStation::STATUS_OFF_HOOK:
           case PbxStation::STATUS_WET_LIST:
