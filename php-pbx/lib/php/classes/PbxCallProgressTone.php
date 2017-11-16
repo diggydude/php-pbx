@@ -27,9 +27,9 @@
        return self::$_instance;
     } // instance
 	
-    public function connect($stationNumber)
+    public function connect($station)
     {
-      $this->execute('C,' . PbxSwitch::instance()->getOrdinal($stationNumber));
+      $this->execute('C,' . Pbx::instance()->getStation($station)->ordinal);
     } // connect
 
     public function disconnect()
