@@ -29,66 +29,96 @@
     $ringer->update();
     $finder->update();
     $digits->update();
-    $linesOffHook = $finder->lines;
     for ($i = 0; $i < 8; $i++) {
       if (($station = $pbx->getStation($i)) === null) {
         continue;
       }
-      if (in_array($i, $linesOffHook)) {
-        if ($station->isBusy()) {
-          switch ($station->status) {
-            case PbxStation::STATUS_ON_HOOK:
-              $station->setStatus(PbxStation::STATUS_OFF_HOOK);
-              break;
-            case PbxStation::STATUS_OFF_HOOK:
-              if ($tone->status == PbxCallProgressTone::STATUS_READY) {
-                $tone->connect($station->ordinal);
-                $station->setStatus(PbxStation::STATUS_DIALING);
-              }
-              break;
-            case PbxStation::STATUS_DIALING:
-              switch ($digits->status) {
-                case PbxDigitReceiver::STATUS_READY:
+      $offHook = in_array($i, $finder->lines);
+      if ($offfHook) {
+        switch ($station->status) {
+          case PbxStation::STATUS_ON_HOOK:
+            $station->setStatus(PbxStation::STATUS_OFF_HOOK);
+            break;
+          case PbxStation::STATUS_OFF_HOOK:
+            if (($tone->status == PbxCallProgressTone::STATUS_READY)
+                   && ($digits->status == PbxDigitReceiver::STATUS_READY)) {
+              $tone->connect($station->ordinal);
+              $digits->connect($station->ordinal);
+              $station->setStatus(PbxStation::STATUS_DIALING);
+            }
+            break;
+          case PbxStation::STATUS_DIALING:
+            switch ($digits->status) {
+              case PbxDigitReceiver::STATUS_READY:
+              case PbxDigitReceiver::STATUS_WAITING:
+                break;
+              case PbxDigitReceiver::STATUS_RECEIVING:
+                $tone->setTone(PbxCallProgressTone::TONE_NONE);
+                break;
+              case PbxDigitReceiver::STATUS_COMPLETED:
+                $number = $digits->number;
+                $digits->disconnect();
+                if (($callee = $pbx->getStation($number)) === null) {
+                  $tone->setTone(PbxCallProgressTone::TONE_REORDER);
                   break;
-                case PbxDigitReceiver::STATUS_WAITING:
-                  break;
-                case PbxDigitReceiver::STATUS_RECEIVING:
-                  $tone->setTone(PbxCallProgressTone::TONE_NONE);
-                  break;
-                case PbxDigitReceiver::STATUS_COMPLETED:
-                  $number = $digits->number;
-                  $digits->disconnect();
-                  if (($callee = $pbx->getStation($number)) === null) {
-                    $tone->setTone(PbxCallProgressTone::TONE_REORDER);
-                    break;
-                  }
-                  $ringer->connect($callee->ordinal);
-                  break;
-                case PbxDigitReceiver::STATUS_TIMED_OUT:
-                  break;
-              }
-              break;
-            case PbxStation::STATUS_RINGING:
+                }
+                $ringer->connect($callee->ordinal);
+                $tone->setTone(PbxCallProgressTone::TONE_RINGING);
+                $station->setStatus(PbxStation::STATUS_CONNECTING);
+                break;
+              case PbxDigitReceiver::STATUS_TIMED_OUT:
+                $digits->disconnect();
+                $tone->setTone(PbxCallProgressTone::TONE_REORDER);
+                $station->setStatus(PbxStation::STATUS_OFF_HOOK);
+                break;
+            }
+            break;
+          case PbxStation::STATUS_RINGING:
+            $ringer->disconnect();
+            $caller = $tone->station();
+            $tone->disconnect();
+            $fabric->connect($caller, $i);
+            break;
+          case PbxStation::STATUS_CONNECTING:
+            if ($ringer->status == PbxRinger::STATUS_TIMED_OUT) {
               $ringer->disconnect();
-              $caller = $tone->getStation();
               $tone->disconnect();
-              $fabric->connect($caller, $i);
-              break;
-            case PbxStation::STATUS_TALKING:
-              break;
-            case PbxStation::STATUS_WET_LIST:
-              break;
-          }
-        }
-        else {
-
+              $station->setStatus(PbxStation::STATUS_OFF_HOOK);
+            }
+            break;
+          case PbxStation::STATUS_TALKING:
+          case PbxStation::STATUS_WET_LIST:
+            break;
         }
       }
       else {
-
-      }
-    }
-
-  }
+        switch ($station->status) {
+          case PbxStation::STATUS_ON_HOOK:
+          case PbxStation::STATUS_RINGING:
+            break;
+          case PbxStation::STATUS_OFF_HOOK:
+          case PbxStation::STATUS_WET_LIST:
+            $station->setStatus(PbxStation::STATUS_ON_HOOK);
+            break;
+          case PbxStation::STATUS_DIALING:
+            $tone->disconnect();
+            $digits->disconnect();
+            $station->setStatus(PbxStation::STATUS_ON_HOOK);
+            break;
+          case PbxStation::STATUS_CONNECTING:
+            $ringer->disconnect();
+            $tone->disconnect();
+            $station->setStatus(PbxStation::STATUS_ON_HOOK);
+            break;
+          case PbxStation::STATUS_TALKING:
+            $route = $fabric->getConnection($station->ordinal);
+            $fabric->disconnect($route);
+            $pbx->getStation($route->ax)->setStatus(PbxStation::STATUS_ON_HOOK);
+            $pbx->getStation($route->ay)->setStatus(PbxStation::STATUS_ON_HOOK);
+            break;
+        }
+      } // if/else
+    } // for
+  } // while
 
 ?>

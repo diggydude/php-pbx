@@ -17,7 +17,8 @@
 
       $status,
       $lastUpdated,
-      $timeout;
+      $timeout,
+      $station;
 
     public static function instance($params = null)
     {
@@ -29,7 +30,8 @@
 
     public function connect($station)
     {
-      $this->execute('C,' . Pbx::instance()->getStation($station)->ordinal);
+      $this->station = Pbx::instance()->getStation($station)->ordinal;
+      $this->execute('C,' . $this->station);
       $this->status      = self::STATUS_RINGING;
       $this->lastUpdated = time();
     } // connect
@@ -59,6 +61,7 @@
     {
       $this->status      = self::STATUS_READY;
       $this->lastUpdated = time();
+      $this->station     = null;
     } // reset
 
     protected function __construct($params)

@@ -20,6 +20,7 @@
       $status,
       $lastUpdated,
       $timeout,
+      $station,
       $number;
 
     public static function instance($params = null)
@@ -76,7 +77,8 @@
       if (($station = Pbx::instance()->getStation($station)) === null) {
         throw new Exception(__METHOD__ . ' > Invalid station identifier.');
       }
-      $this->execute('C,' . $station->ordinal);
+      $this->station = $station->ordinal;
+      $this->execute('C,' . $this->station);
       $this->status = self::STATUS_WAITING;
     } // connect
 
@@ -88,9 +90,10 @@
 
     public function reset()
     {
-      $this->status = self::STATUS_READY;
+      $this->station     = null;
       $this->lastUpdated = time();
       $this->number      = null;
+      $this->status      = self::STATUS_READY;
     } // reset
 
     protected function __construct($params)

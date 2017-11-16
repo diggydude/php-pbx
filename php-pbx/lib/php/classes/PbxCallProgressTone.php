@@ -10,6 +10,8 @@
     const TONE_RINGING = 2;
     const TONE_BUSY    = 3;
     const TONE_REORDER = 4;
+    const STATUS_READY = 0;
+    const STATUS_BUSY  = 1;
 	
     protected static
 	
@@ -18,7 +20,8 @@
     protected
 	
       $tone,
-      $busy;
+      $status,
+      $station;
 	
     public static function instance($params = null)
     {
@@ -30,16 +33,18 @@
 	
     public function connect($station)
     {
-      $this->busy = true;
+      $this->status  = self::STATUS_BUSY;
+      $this->station = Pbx::instance()->getStation($station)->ordinal;
       $this->setTone(self::TONE_DIAL);
-      $this->execute('C,' . Pbx::instance()->getStation($station)->ordinal);
+      $this->execute('C,' . $this->station);
     } // connect
 
     public function disconnect()
     {
       $this->setTone(self::TONE_NONE);
       $this->execute('D,0');
-      $this->busy = false;
+      $this->station = null;
+      $this->status = self::STATUS_READY;
     } // disconnect
 	
     public function setTone($tone)
@@ -57,16 +62,12 @@
       }
     } // setTone
 
-    public function isBusy()
-    {
-      return $this->busy;
-    } // isBusy
-
     protected function __construct($params)
     {
       parent::__construct($params->droid);
-      $this->tone = self::TONE_NONE;
-      $this->busy = false;
+      $this->tone    = self::TONE_NONE;
+      $this->station = null;
+      $this->status  = self::STATUS_READY;
     } // __construct
   
   } // PbxCallProgressTone
