@@ -16,38 +16,43 @@
   "ringer"        : {
                       "timeout" : 15,
                       "droid"   : {
-                                    "name"     : "ringer",
+                                    "id"       : "ringer",
                                     "device"   : "/dev/ttyUSB0",
-                                    "baudRate" : 9600
+                                    "baudRate" : 9600,
+                                    "lineEnd"  : "\r\n"
                                   }
                     },
   "progressTone"  : {
                       "droid"   : {
-                                    "name"     : "tone",
+                                    "id"       : "tone",
                                     "device"   : "/dev/ttyUSB1",
-                                    "baudRate" : 9600
+                                    "baudRate" : 9600,
+                                    "lineEnd"  : "\r\n"
                                   }
                     },
   "digitReceiver" : {
                       "timeout" : 15,
                       "droid"   : {
-                                    "name"     : "digits",
+                                    "id"       : "digits",
                                     "device"   : "/dev/ttyUSB2",
-                                    "baudRate" : 9600
+                                    "baudRate" : 9600,
+                                    "lineEnd"  : "\r\n"
                                   }
                     },
   "lineFinder"    : {
                       "droid"   : {
-                                    "name"     : "finder",
+                                    "id"       : "finder",
                                     "device"   : "/dev/ttyUSB3",
-                                    "baudRate" : 9600
+                                    "baudRate" : 9600,
+                                    "lineEnd"  : "\r\n"
                                   }
                     },
   "fabric"        : {
                       "droid"   : {
-                                    "name"     : "switch",
+                                    "id"       : "switch",
                                     "device"   : "/dev/ttyUSB4",
-                                    "baudRate" : 9600
+                                    "baudRate" : 9600,
+                                    "lineEnd"  : "\r\n"
                                   }
                     }
 }
