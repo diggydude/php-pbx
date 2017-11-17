@@ -14,14 +14,16 @@
   extension numbers.
 
   Station: Maintains state information about a Subscriber Line Interface Card
-  (SLIC) connected to a telephone set.
+  (SLIC) connected to a telephone set. The SLICs employed in our exchange are
+  the Shenzhen Ring&Tone KS0835F, readily available on Ebay for around $8 US.
 
   Line Finder: Scans each of the eight station hooks round robin, and supplies
   a list of stations that are currently off the hook.
 
   Call Progress Tone Generator: Connects to a station when it goes off-hook,
   and supplies audible tones (dial tone, ringing, busy, reorder) to inform the
-  caller of call progress.
+  caller of call progress. The tone generator IC employed in our PBX is the
+  Clare M-991.
 
   Digit Receiver: Connects to the calling station, counts pulses from the
   station's rotary dial, and translates them to the four-digit extension number
@@ -30,8 +32,9 @@
   Ringer: Connects to the called station and supplies signals that cause the
   telephone to ring.
 
-  Switching Fabric: A pair of 8x8 switching matrices that connect a calling
+  Switching Fabric: A pair of 8x8 matrix switches that connect a calling
   station's audio output to the called station's audio input, and vice versa.
+  The switches employed in our PBX are the Zarlink MT8808.
 
   Main Script: Initializes the above components and coordinates their
   operations in an endless loop to implement the telephone exchange.
