@@ -23,7 +23,7 @@
   $pbx    = Pbx::instance(
               (object) array(
                 'cache'    => $cache,
-                'stations' => $config->stations
+                'stations' => get_object_vars($config->stations)
               )
             );
 
