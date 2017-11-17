@@ -2,7 +2,7 @@
 
   require_once(__DIR__ . '/Droid.php');
 
-  class PbxRinger extends Droid
+  class PbxRinger
   {
 
     const STATUS_READY     = 0;
@@ -15,6 +15,7 @@
 
     protected
 
+      $droid,
       $status,
       $lastUpdated,
       $timeout,
@@ -31,14 +32,14 @@
     public function connect($station)
     {
       $this->station = Pbx::instance()->getStation($station)->ordinal;
-      $this->execute('C,' . $this->station);
+      $this->droid->execute('C,' . $this->station);
       $this->status      = self::STATUS_RINGING;
       $this->lastUpdated = time();
     } // connect
 
     public function disconnect()
     {
-      $this->execute('D,0');
+      $this->droid->execute('D,0');
       $this->reset();
     } // disconnect
 
@@ -66,7 +67,7 @@
 
     protected function __construct($params)
     {
-      parent::__construct($params->droid);
+      $this->droid = new Droid($params->droid);
       $this->reset();
     } // __conctruct
 

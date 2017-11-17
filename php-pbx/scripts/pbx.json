@@ -1,0 +1,53 @@
+{
+  "cache"         : {
+                      "id"      : "pbx",
+                      "ttl"     : 3600,
+                      "servers" : [
+                                    ["127.0.0.1",   11211],
+                                    ["192.168.2.2", 11211],
+                                    ["192.168.2.7", 11211]
+                                  ]
+                    },
+  "stations"      : {
+                      "0" : 7969,
+                      "1" : 4321,
+                      "5" : 5555
+                    },
+  "ringer"        : {
+                      "timeout" : 15,
+                      "droid"   : {
+                                    "name"     : "ringer",
+                                    "device"   : "/dev/ttyUSB0",
+                                    "baudRate" : 9600
+                                  }
+                    },
+  "progressTone"  : {
+                      "droid"   : {
+                                    "name"     : "tone",
+                                    "device"   : "/dev/ttyUSB1",
+                                    "baudRate" : 9600
+                                  }
+                    },
+  "digitReceiver" : {
+                      "timeout" : 15,
+                      "droid"   : {
+                                    "name"     : "digits",
+                                    "device"   : "/dev/ttyUSB2",
+                                    "baudRate" : 9600
+                                  }
+                    },
+  "lineFinder"    : {
+                      "droid"   : {
+                                    "name"     : "finder",
+                                    "device"   : "/dev/ttyUSB3",
+                                    "baudRate" : 9600
+                                  }
+                    },
+  "fabric"        : {
+                      "droid"   : {
+                                    "name"     : "switch",
+                                    "device"   : "/dev/ttyUSB4",
+                                    "baudRate" : 9600
+                                  }
+                    }
+}

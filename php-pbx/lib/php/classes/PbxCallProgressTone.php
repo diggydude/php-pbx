@@ -2,7 +2,7 @@
 
   require_once(__DIR__ . '/Droid.php');
 
-  class PbxCallProgressTone extends Droid
+  class PbxCallProgressTone
   {
 
     const TONE_NONE    = 0;
@@ -18,7 +18,8 @@
       $_instance;
 	
     protected
-	
+
+      $droid,	
       $tone,
       $status,
       $station;
@@ -36,13 +37,13 @@
       $this->status  = self::STATUS_BUSY;
       $this->station = Pbx::instance()->getStation($station)->ordinal;
       $this->setTone(self::TONE_DIAL);
-      $this->execute('C,' . $this->station);
+      $this->droid->execute('C,' . $this->station);
     } // connect
 
     public function disconnect()
     {
       $this->setTone(self::TONE_NONE);
-      $this->execute('D,0');
+      $this->droid->execute('D,0');
       $this->station = null;
       $this->status = self::STATUS_READY;
     } // disconnect
@@ -55,7 +56,7 @@
 	case self::TONE_RINGING:
 	case self::TONE_BUSY:
 	case self::TONE_REORDER:
-          $this->execute('S,' . $tone);
+          $this->droid->execute('S,' . $tone);
           break;
         default:
           throw new Exception(__METHOD__ . ' > Unknown tone: ' . $tone);		
@@ -64,7 +65,7 @@
 
     protected function __construct($params)
     {
-      parent::__construct($params->droid);
+      $this->droid   = new Droid($params->droid);
       $this->tone    = self::TONE_NONE;
       $this->station = null;
       $this->status  = self::STATUS_READY;

@@ -11,6 +11,7 @@
 
     protected
 
+      $cache,
       $stations;
 
     public function instance($params = null)
@@ -34,13 +35,8 @@
       }
       $this->cache = $params->cache;
       if (!$this->cache->exists('stations')) {
-        if (!file_exists($params->ConfigFile)) {
-          throw new Exception(__METHOD__ . ' > Configuration file "' . $params->configFile . '" not found.');
-        }
         $stations = array();
-        $lines    = file($params->configFile);
-        foreach ($lines as $line) {
-          list($ordinal, $number) = explode("\t", trim($line));
+        foreach ($params->stations as $ordinal => $number) {
           if (($ordinal < 0) || ($ordinal > 7)) {
             throw new Exception(__METHOD__ . ' > Ordinal must be between 0 and 7.');
           }

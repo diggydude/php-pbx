@@ -3,7 +3,7 @@
   require_once(__DIR__ . '/Droid.php');
   require_once(__DIR__ . '/Pbx.php');
 
-  class PbxSwitch extends Droid
+  class PbxSwitch
   {
 
     protected static
@@ -13,6 +13,7 @@
     protected
 
       $cache,
+      $droid,
       $routes;
 
     public static function instance($params = null)
@@ -26,14 +27,14 @@
     public function connect($caller, $callee)
     {
       $route = $this->getRoute($caller, $callee);
-      $this->execute('C,' . $route->ax . ',' . $route->ay);
+      $this->droid->execute('C,' . $route->ax . ',' . $route->ay);
       $this->markRouteBusy($route);
     } // connect
 
     public function disconnect($caller, $callee)
     {
       $route = $this->getRoute($caller, $callee);
-      $this->execute('D,' . $route->ax . ',' . $route->ay);
+      $this->droid->execute('D,' . $route->ax . ',' . $route->ay);
       $this->markRouteNotBusy($route);
     } // disconnect
 
@@ -85,7 +86,7 @@
 
     protected function __construct($params)
     {
-      parent::__construct($params->droid);
+      $this->droid = new Droid($params->droid);
       if (!($params->cache instanceof Cache)) {
         throw new Exception(__METHOD__ . ' > Instance of Cache required.');
       }

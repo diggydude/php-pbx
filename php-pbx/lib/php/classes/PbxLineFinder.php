@@ -2,7 +2,7 @@
 
   require_once(__DIR__ . '/Droid.php');
 
-  class PbxLineFinder extends Droid
+  class PbxLineFinder
   {
 
     protected static
@@ -11,6 +11,7 @@
 
     protected
 
+      $droid,
       $lines;
 
     public function instance($params = null)
@@ -23,7 +24,7 @@
 
     public function update()
     {
-      $lines = $this->execute('G');
+      $lines = $this->droid->execute('G');
       $this->lines = (strlen($lines) > 0)
                    ? explode(",", $lines)
                    : array();
@@ -31,7 +32,7 @@
 
     protected function __construct($params)
     {
-      parent::__construct($params->droid);
+      $this->droid = new Droid($params->droid);
       $this->lines = array();
     } // __construct
 

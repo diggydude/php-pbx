@@ -2,7 +2,7 @@
 
   require_once(__DIR__ . '/Droid.php');
 
-  class PbxDigitReceiver extends Droid
+  class PbxDigitReceiver
   {
 
     const STATUS_READY     = 0;
@@ -17,6 +17,7 @@
 
     protected
 
+      $droid,
       $status,
       $lastUpdated,
       $timeout,
@@ -78,13 +79,13 @@
         throw new Exception(__METHOD__ . ' > Invalid station identifier.');
       }
       $this->station = $station->ordinal;
-      $this->execute('C,' . $this->station);
+      $this->droid->execute('C,' . $this->station);
       $this->status = self::STATUS_WAITING;
     } // connect
 
     public function disconnect()
     {
-      $this->execute('D,0');
+      $this->droid->execute('D,0');
       $this->reset();
     } // disconnect
 
@@ -98,7 +99,7 @@
 
     protected function __construct($params)
     {
-      parent::__construct($params->droid);
+      $this->droid = new Droid($params->droid);
       $this->timeout = (isset($params->timeout)) ? $params->timeout : 15;
       $this->reset();
     } // __construct
@@ -108,6 +109,6 @@
       return (property_exists($this, $prop)) ? $this->$prop : null;
     } // __get
 
-  } // Droid
+  } // PbxDigitReceiver
 
 ?>

@@ -10,19 +10,55 @@
   require_once(__DIR__ . '/../lib/php/classes/PbxLineFinder.php');
   require_once(__DIR__ . '/../lib/php/classes/PbxDigitReceiver.php');
 
-  $cache  = new Cache();
+  $config = json_decode(file_get_contents(__DIR__ . '/pbx.json'));
 
-  $pbx    = Pbx::instance();
+  $cache  = Cache::connect(
+              (object) array(
+                'id'      => $config->cache->id,
+                'ttl'     => $config->cache->ttl,
+                'servers' => $config->cache->servers
+              );
+            );
 
-  $fabric = PbxSwitch::instance();
+  $pbx    = Pbx::instance(
+              (object) array(
+                'cache'    => $cache,
+                'stations' => $config->stations
+              )
+            );
 
-  $tone   = PbxCallProgressTone::instance();
+  $fabric = PbxSwitch::instance(
+              (object) array(
+                'cache' => $cache,
+                'droid' => $config->fabric->droid
+              )
+            );
 
-  $ringer = PbxRinger::instance();
+  $tone   = PbxCallProgressTone::instance(
+              (object) array(
+                'droid' => $config->progressTone->droid
+              )
+            );
 
-  $finder = PbxLineFinder::instance();
+  $ringer = PbxRinger::instance(
+              (object) array(
+                'timeout' => $config->ringer->timeout,
+                'droid'   => $config->ringer->droid
+              )
+            );
 
-  $digits = PbxDigitReceiver::instance();
+  $finder = PbxLineFinder::instance(
+              (object) array(
+                'droid' => $config->lineFinder->droid
+              )
+            );
+
+  $digits = PbxDigitReceiver::instance(
+              (object) array(
+                'timeout' => $config->digitReceiver->timeout,
+                'droid'   => $config->digitReceiver->droid
+              )
+            );
 
   while (true) {
     $tone->update();
