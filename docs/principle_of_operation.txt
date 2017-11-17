@@ -1,0 +1,54 @@
++-----------------------------------------------------------------------------+
+|                                                                             |
+|            PHP-PBX: An Exchange for Rotary Dial Telephones in PHP           |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+                                 Components
+
+------------------------------------------------------------------------------
+
+  Cache: Stores program state variables in RAM.
+
+  PBX: Resolves station ordinal numbers (0-7) from their assigned four-digit
+  extension numbers.
+
+  Station: Maintains state information about a Subscriber Line Interface Card
+  (SLIC) connected to a telephone set.
+
+  Line Finder: Scans each of the eight station hooks round robin, and supplies
+  a list of stations that are currently off the hook.
+
+  Call Progress Tone Generator: Connects to a station when it goes off-hook,
+  and supplies audible tones (dial tone, ringing, busy, reorder) to inform the
+  caller of call progress.
+
+  Digit Receiver: Connects to the calling station, counts pulses from the
+  station's rotary dial, and translates them to the four-digit extension number
+  of the called station.
+
+  Ringer: Connects to the called station and supplies signals that cause the
+  telephone to ring.
+
+  Switching Fabric: A pair of 8x8 switching matrices that connect a calling
+  station's audio output to the called station's audio input, and vice versa.
+
+  Main Script: Initializes the above components and coordinates their
+  operations in an endless loop to implement the telephone exchange.
+
+ ------------------------------------------------------------------------------
+
+                                   Droids
+
+-------------------------------------------------------------------------------
+
+  A Droid is composed of a microcontroller development board (MCU), the
+  firmware running on the MCU, the custom hardware being controlled by the MCU,
+  a serial connection between the MCU and the main computer, and a PHP class
+  that encapsulates these items, providing an interface between the MCU and the
+  main script. The MCU employed will typically be an Aurduino Nano.
+
+  The Line Finder, Call Progress Tone Generator, Digit Receiver, Ringer, and
+  Switching Fabric in our PBX are all Droids.
+
+

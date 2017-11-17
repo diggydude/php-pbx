@@ -10,7 +10,7 @@
   require_once(__DIR__ . '/../lib/php/classes/PbxLineFinder.php');
   require_once(__DIR__ . '/../lib/php/classes/PbxDigitReceiver.php');
 
-  $config = json_decode(file_get_contents(__DIR__ . '/pbx.json'));
+  $config = json_decode(file_get_contents(__DIR__ . '/config.json'));
 
   $cache  = Cache::connect(
               (object) array(
