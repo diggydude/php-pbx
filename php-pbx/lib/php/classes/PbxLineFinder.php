@@ -24,7 +24,7 @@
 
     public function update()
     {
-      $lines = $this->droid->execute('G');
+      $lines = $this->droid->execute('STATUS?');
       $this->lines = (strlen($lines) > 0)
                    ? explode(",", $lines)
                    : array();
