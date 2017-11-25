@@ -1,0 +1,18 @@
+-------------------------------------------------------------------------------
+
+                                  Credits
+
+-------------------------------------------------------------------------------
+
+The switch debouncing code in the LineFinder sketch is based on a sketch by
+David A. Mellis, Limor Fried, and Michael J., found here:
+
+  https://programmingelectronics.com/tutorial-19-debouncing-a-button-with
+  -arduino-old-version/ (no spaces in URI)
+
+The rotary dial pulse counter code in the DigitReceiver sketch is based on a
+sketch by guidomax, found here:
+
+  http://www.instructables.com/id/Interface-a-rotary-phone-dial-to-an-Arduino/
+
+
