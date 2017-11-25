@@ -15,7 +15,7 @@ byte muxChSelPin0  = 7;
 byte muxChSelPin1  = 6;
 byte muxChSelPin2  = 5;
 byte muxInhibitPin = 4;
-byte currTone      = TONE_NONE;
+byte currentTone   = TONE_NONE;
 int  cadenceState  = -1;
 long lastChanged   = 0;
 
