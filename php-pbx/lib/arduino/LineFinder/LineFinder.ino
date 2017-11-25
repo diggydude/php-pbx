@@ -1,16 +1,16 @@
 #include <Messenger.h>
 
-char id[11]        = "linefinder";
-byte i             = 0;
-byte currentPin    = 0;
-byte currentState  = LOW;
-byte pins[]        = {5, 6, 7, 8, 9, 10, 11, 12};
-byte states[]      = {-1, -1, -1, -1, -1, -1, -1, -1};
-byte status[]      = {0, 0, 0, 0, 0, 0, 0, 0};
-long lastChecked[] = {0, 0, 0, 0, 0, 0, 0, 0};
-long debounceDelay = 10;
-byte result        = 0;
-Messenger message  = Messenger();
+char id[11]         = "linefinder";
+byte i              = 0;
+byte currentPin     = 0;
+byte currentState   = LOW;
+byte pins[8]        = {5, 6, 7, 8, 9, 10, 11, 12};
+byte states[8]      = {-1, -1, -1, -1, -1, -1, -1, -1};
+byte status[8]      = {0, 0, 0, 0, 0, 0, 0, 0};
+long lastChecked[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+long debounceDelay  = 10;
+byte result         = 0;
+Messenger message   = Messenger();
 
 void next()
 {

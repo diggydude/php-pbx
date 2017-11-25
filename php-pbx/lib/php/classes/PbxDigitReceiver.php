@@ -95,7 +95,7 @@
 
     protected function __construct($params)
     {
-      $this->droid = new Droid($params->droid);
+      $this->droid   = new Droid($params->droid);
       $this->timeout = (isset($params->timeout)) ? $params->timeout : 15;
       $this->reset();
     } // __construct
