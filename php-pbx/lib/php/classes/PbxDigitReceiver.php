@@ -34,41 +34,35 @@
 
     public function update()
     {
-      $now = time();
+      $status = $this->droid->execute('STATUS?');
       switch ($this->status) {
         case self::STATUS_READY:
+          $this->status = $status;
           break;
         case self::STATUS_WAITING:
-          $number = $this->execute('G,0');
-          $len    = strlen($number);
-          if ($len > 0) {
-            $this->status = self::STATUS_RECEIVING;
+          if ($this->status == self::STATUS_READY) {
+            $this->lastUpdated = time();
           }
-          if ($len > strlen($this->number)) {
-            $this->number      = $number;
-            $this->lastUpdated = $now;
-          }
-          if (($now - $this->lastUpdated) > $this->timeout) {
-            $this->status = self::STATUS_TIMED_OUT;
-          }
+          $this->status = ((time() - $this->lastUpdated) > $this->timeout) ? self::STATUS_TIMED_OUT : $status;
           break;
         case self::STATUS_RECEIVING:
-          $number = $this->execute('G,0');
-          $len    = strlen($number);
-          if ($len > strlen($this->number)) {
-            $this->number      = $number;
-            $this->lastUpdated = $now;
+          if ($this->status == self::STATUS_WAITING) {
+            $this->lastUpdated = time();
           }
-          if ($len == 4) {
-            $this->status = self::STATUS_COMPLETED;
-            break;
+          $digits = $this->droid->execute('DIGITS?');
+          if ($digits > $this->number) {
+            $this->number = $digits;
+            $this->lastUpdated = time();
           }
-          if (($now - $this->lastUpdated) > $this->timeout) {
-            $this->status = self::STATUS_TIMED_OUT;
-          }
+          $this->status = ((time() - $this->lastUpdated) > $this->timeout) ? self::STATUS_TIMED_OUT : $status;
           break;
         case self::STATUS_COMPLETED:
+          $this->number = $this->droid->execute('DIGITS?');
+          $this->reset();
+          break;
         case self::STATUS_TIMED_OUT:
+          $this->droid->execute('DISCONNECT');
+          $this->reset();
           break;
       }
     } // update
@@ -79,18 +73,20 @@
         throw new Exception(__METHOD__ . ' > Invalid station identifier.');
       }
       $this->station = $station->ordinal;
-      $this->droid->execute('C,' . $this->station);
-      $this->status = self::STATUS_WAITING;
+      $this->droid->execute('CONNECT ' . $this->station);
+      $this->lastUpdated = time();
+      $this->status      = self::STATUS_WAITING;
     } // connect
 
     public function disconnect()
     {
-      $this->droid->execute('D,0');
+      $this->droid->execute('DISCONNECT');
       $this->reset();
     } // disconnect
 
     public function reset()
     {
+      $this->droid->execute('RESET');
       $this->station     = null;
       $this->lastUpdated = time();
       $this->number      = null;

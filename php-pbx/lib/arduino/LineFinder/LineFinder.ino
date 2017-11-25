@@ -1,4 +1,3 @@
-#include <Wire.h>
 #include <Messenger.h>
 
 char id[11]        = "linefinder";
@@ -36,7 +35,6 @@ void messageCompleted()
 
 void setup()
 {
-  Wire.begin();
   Serial.begin(9600);
   message.attach(messageCompleted);
   for (i = 0; i < 8; i++) {
