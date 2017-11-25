@@ -91,6 +91,9 @@ void setup()
 
 void loop()
 {
+  while (Serial.available()) {
+    message.process(Serial.read());
+  }
   int reading = digitalRead(muxComIoPin);
   if ((millis() - lastChange) > dialTimeout) {
     if (digitCaptured) {

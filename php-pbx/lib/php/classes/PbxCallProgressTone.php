@@ -27,7 +27,7 @@
     public static function instance($params = null)
     {
       if (!(self::$_instance instanceof self)) {
-	self::$_instance = new self($params);
+        self::$_instance = new self($params);
       }
        return self::$_instance;
     } // instance
@@ -37,13 +37,13 @@
       $this->status  = self::STATUS_BUSY;
       $this->station = Pbx::instance()->getStation($station)->ordinal;
       $this->setTone(self::TONE_DIAL);
-      $this->droid->execute('C,' . $this->station);
+      $this->droid->execute('CONNECT ' . $this->station);
     } // connect
 
     public function disconnect()
     {
       $this->setTone(self::TONE_NONE);
-      $this->droid->execute('D,0');
+      $this->droid->execute('DISCONNECT');
       $this->station = null;
       $this->status = self::STATUS_READY;
     } // disconnect
@@ -51,12 +51,12 @@
     public function setTone($tone)
     {
       switch ($tone) {
-	case self::TONE_NONE:
-	case self::TONE_DIAL:
-	case self::TONE_RINGING:
-	case self::TONE_BUSY:
-	case self::TONE_REORDER:
-          $this->droid->execute('S,' . $tone);
+        case self::TONE_NONE:
+        case self::TONE_DIAL:
+        case self::TONE_RINGING:
+        case self::TONE_BUSY:
+        case self::TONE_REORDER:
+          $this->droid->execute('TONE ' . $tone);
           break;
         default:
           throw new Exception(__METHOD__ . ' > Unknown tone: ' . $tone);		
