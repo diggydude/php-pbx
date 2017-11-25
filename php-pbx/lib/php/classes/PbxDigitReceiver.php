@@ -51,14 +51,14 @@
           }
           $digits = $this->droid->execute('DIGITS?');
           if ($digits > $this->number) {
-            $this->number = $digits;
+            $this->number      = $digits;
             $this->lastUpdated = time();
           }
           $this->status = ((time() - $this->lastUpdated) > $this->timeout) ? self::STATUS_TIMED_OUT : $status;
           break;
         case self::STATUS_COMPLETED:
           $this->number = $this->droid->execute('DIGITS?');
-          $this->reset();
+          $this->status = $status;
           break;
         case self::STATUS_TIMED_OUT:
           $this->droid->execute('DISCONNECT');
