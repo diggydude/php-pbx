@@ -10,6 +10,7 @@ byte currentChannel  = 0;
 byte i               = 0;
 int  waveState       = -1
 long lastChanged     = 0;
+Messenger message    = Messenger();
 
 void messageCompleted()
 {

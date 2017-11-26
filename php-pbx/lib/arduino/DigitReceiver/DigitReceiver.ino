@@ -23,7 +23,7 @@ int  debounceDelay  = 10;
 byte currentDigit   = 0;
 byte digits[4]      = {0, 0, 0, 0};
 byte status         = STATUS_READY;
-Messenger messenger = Messenger();
+Messenger message   = Messenger();
 
 void messageCompleted()
 {

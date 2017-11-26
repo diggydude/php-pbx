@@ -18,6 +18,7 @@ byte muxInhibitPin = 4;
 byte currentTone   = TONE_NONE;
 int  cadenceState  = -1;
 long lastChanged   = 0;
+Messenger message  = Messenger();
 
 struct Cadence {
   unsigned int onTime;
