@@ -143,8 +143,10 @@
   After initializing all of the PHP modules in the system, the main script
   enters an endless loop. On each iteration, the eight stations are checked to
   see if they're on or off the hook. All decisions made within the loop are
-  based on that results of that check, the last known status of each of the PHP
-  modules, and other state data stored in the RAM cache.
+  based on that results of that check, the last known status of each Droid as
+  tracked by its corresponding PHP module, the current status of each Droid as
+  determined by querying the Droid itself, and other state data stored in the
+  RAM cache.
 
   Since there is only a single instance of each of the hardware resources
   devoted to setting up and tearing down calls, suitable timeout periods are
