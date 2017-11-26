@@ -1,16 +1,18 @@
 #include <Messenger.h>
 
-byte waveOutPin      = 13;
-byte muxChSelPin0    = 12;
-byte muxChSelPin1    = 11;
-byte muxChSelPin2    = 10;
-byte muxInhibitPin   = 9;
-byte ringModePins[8] = {8, 7, 6, 5, 4, 3, 2, 1};
-byte currentChannel  = 0;
-byte i               = 0;
-int  waveState       = -1
-long lastChanged     = 0;
-Messenger message    = Messenger();
+byte waveOutPin         = 13;
+byte muxChSelPin0       = 12;
+byte muxChSelPin1       = 11;
+byte muxChSelPin2       = 10;
+byte muxInhibitPin      = 9;
+byte ringModePins[8]    = {8, 7, 6, 5, 4, 3, 2, 1};
+byte currentChannel     = -1;
+byte i                  = 0;
+int  waveState          = -1
+long waveLastChanged    = 0;
+byte cadenceState       = -1;
+long cadenceLastChanged = 0;
+Messenger message = Messenger();
 
 void messageCompleted()
 {
@@ -39,6 +41,7 @@ void disconnect()
 {
   digitalWrite(ringModePins[currentChannel], LOW);
   digitalWrite(muxInhibitPin,                LOW);
+  currentChannel = -1;
 } // disconnect
 
 void setup()
@@ -62,17 +65,35 @@ void loop()
   while (Serial.available()) {
     message.process(Serial.read());
   }
-  if (ringState < 0) {
-    if ((millis() - lastChanged) > 20) {
-      ringState   = -ringState;
-      lastChanged = millis();
+  if (cadenceState < 0) {
+    if ((millis() - cadenceLastChanged) > 4000) {
+      cadenceState       = -cadenceState;
+      cadenceLastChanged = millis();
+      if (currentChannel > -1) {
+        digitalWrite(ringModePins[currentChannel], HIGH);
+      }
+    }
+  }
+  else {
+    if ((millis() - cadenceLastChanged) > 2000) {
+      cadenceState       = -cadenceState;
+      cadenceLastChanged = millis();
+      if (currentChannel > -1) {
+        digitalWrite(ringModePins[currentChannel], LOW);
+      }
+    }
+  }
+  if (waveState < 0) {
+    if ((millis() - waveLastChanged) > 20) {
+      waveState       = -waveState;
+      waveLastChanged = millis();
       digitalWrite(waveOutPin, HIGH);
     }
   }
   else {
-    if ((millis() - lastChanged) > 20) {
-      ringState   = -ringState;
-      lastChanged = millis();
+    if ((millis() - waveLastChanged) > 20) {
+      waveState       = -waveState;
+      waveLastChanged = millis();
       digitalWrite(waveOutPin, LOW);
     }
   }

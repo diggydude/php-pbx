@@ -79,7 +79,7 @@
 
 -------------------------------------------------------------------------------
 
-  The MCU connects to one of the eight SLICs' SHK pins via a CD4051 1-of-8
+  The MCU connects to one of the eight SLICs' SHK pin via a CD4051 1-of-8
   analog multiplexer. It counts pulses until the dial rotation period expires,
   then puts the resulting number (0 - 9) into a four-element array. The main
   script polls the Digit Receiver for status updates, and requests the

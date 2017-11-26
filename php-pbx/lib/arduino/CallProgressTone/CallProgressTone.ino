@@ -6,6 +6,7 @@ const byte TONE_RINGING = 2;
 const byte TONE_BUSY    = 3;
 const byte TONE_REORDER = 4;
 
+byte relayPin      = 13;
 byte toneSelPin0   = 12;
 byte toneSelPin1   = 11;
 byte toneSelPin2   = 10;
@@ -106,6 +107,7 @@ void setup()
 {
   Serial.begin(9600);
   message.attach(messageCompleted);
+  pinMode(relayPin,           OUTPUT);
   pinMode(toneSelPin0,        OUTPUT);
   pinMode(toneSelPin1,        OUTPUT);
   pinMode(toneSelPin2,        OUTPUT);
@@ -117,6 +119,8 @@ void setup()
   pinMode(muxInhibitPin,      OUTPUT);
   digitalWrite(toneEnablePin, HIGH);
   digitalWrite(muxInhibitPin, LOW);
+  delay(250);
+  digitalWrite(relayPin, HIGH);
 } // setup
 
 void loop()
