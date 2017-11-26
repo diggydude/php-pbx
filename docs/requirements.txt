@@ -1,0 +1,72 @@
++-----------------------------------------------------------------------------+
+|                                                                             |
+|                                 Requirements                                |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+                                    Hardware
+
+-------------------------------------------------------------------------------
+
+  (1)  A single-board computer (SBC) such as a Raspberry Pi, running Linux.
+
+  (2)  Five Arduino Nanos or compatible microcontroller (MCU) development
+       board, unless you want to port the sketches to another MCU platform. The
+       Nano has the advantages of being cheap and easily embedded in a custom
+       circuit.
+
+  (3)  A good quality powered USB hub, such as the HooToo HT-UH010. You may
+       alternately power the MCUs and custom Droid hardware from the same 5V
+       power supply as the SLICs. This is a large project, so make sure it
+       supplies enough current for the whole kit and kaboodle.
+
+  (4)  The aforementioned +5V power supply.
+
+  (5)  Eight Shenzhen Ring&Tone KS0835F subscriber line interface cards.
+
+  (6)  Two Zarlink MT8808 8x8 analog switch matrix ICs.
+
+  (7)  One Clare M-991 call progress tone generator IC.
+
+  (8)  Two CD4051 1-of-8 analog multiplexer/demultiplexer ICs.
+
+  (9)  One SPDT relay actuated by 5VDC.
+
+  (10) One BC549 or equivalent NPN transistor to drive the relay coil.
+
+  (11) One 3.58MHz colorburst crystal for M-991 timing.
+
+  (12) Eight P3100EBL thyristors. This is the TO-92 version of the P3100SC
+       called for in the SLIC schematic. It's a lot cheaper and easier to find
+       than the SMD version.
+
+  (13) Eight P6KE82 zener diodes. (I used the bidirectional P6KE82CH version.)
+
+  (14) Five USB mini cables to connect the Arduinos to the USB hub.
+
+  (15) A good assortment of resistors, ceramic and electrolytic capacitors,
+       diodes, male and female headers, stripboard, 22 AWG hookup wire, and
+       female-to-female ribbon cables.
+
+  NOTE: The pins on the SLICs are too short for the usual female headers. Look
+  for some more shallow ones on Ebay.
+
+  NOTE: This list may not be exhaustive. Check the schematics carefully to see
+  if you'll need anything else I might've missed here. These are the items that
+  may take a little extra effort to source. Anything not mentioned here is
+  likely to be common as dirt, and you'll probably already have it in your kit.
+
+--------------------------------------------------------------------------------
+
+                                  Software
+
+--------------------------------------------------------------------------------
+
+  (1) PHP 5 or greater
+
+  (2) memcached
+
+  (3) The firmware portion of the Messenger application found here is required
+      for all Arduino sketches: http://playground.arduino.cc/Code/Messenger
+      Ignore the red text on that page and click the link under "Download".
+
