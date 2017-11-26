@@ -13,9 +13,11 @@ including use in undistributed in-house applications, obligates the user
 to "Pay It Forward" by contributing monetarily or in kind to such open
 source software and/or hardware project(s) as the user may choose.
 
-This software may not be used for the purpose of infringing the rights of
-any person, as set forth in the Constitution of the United States of
-America.
+This software may not be used to infringe the rights of any person, as set
+forth in the Constitution of the United States of America.
+
+This software may not be used to impugn the reputation or character of any
+person.
 
 This software may not be used to bring about the material, moral, or
 spiritual decline of any person.
