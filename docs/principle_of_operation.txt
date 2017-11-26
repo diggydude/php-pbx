@@ -51,7 +51,95 @@
   that encapsulates these items, providing an interface between the MCU and the
   main script. The MCU employed will typically be an Aurduino Nano.
 
+  Each MCU has a Messenger object that receives and parses commands from the
+  main computer, and executes the requested function, sending data back to the
+  main computer as requested.
+
   The Line Finder, Call Progress Tone Generator, Digit Receiver, Ringer, and
-  Switching Fabric in our PBX are all Droids.
+  Switching Fabric in our PBX are all Droids. A more detailed description of
+  each Droid follows. By examining the Arduino sketches and the schematics in
+  the datasheet for each component, the builder should encounter few problems
+  in constructing an eight-line telephone exchange.
+
+-------------------------------------------------------------------------------
+
+                                 Line Finder
+
+-------------------------------------------------------------------------------
+
+  Eight of the MCU's GPIO pins are configured as inputs, and is connected to
+  the SHK pin of a SLIC. The MCU scans each of the pins round robin, debouncing
+  them for 10ms to eliminate spurious "off hook" signals. When requested, a
+  byte is sent back to the main script, with each bit either set or cleared
+  according to whether the corresponding SLIC is off hook or on hook.
+
+-------------------------------------------------------------------------------
+
+                                Digit Receiver
+
+-------------------------------------------------------------------------------
+
+  The MCU connects to one of the eight SLICs' SHK pins via a CD4051 1-of-8
+  analog multiplexer. It counts pulses until the dial rotation period expires,
+  then puts the resulting number (0 - 9) into a four-element array. The main
+  script polls the Digit Receiver for status updates, and requests the
+  four-digit extension number in the array when the Digit Receiver indicates
+  dialing has completed, i.e., four digits have been stored.
+
+-------------------------------------------------------------------------------
+
+                         Call Progress Tone Generator
+
+-------------------------------------------------------------------------------
+
+  At power up, the M-991 tone generator IC's output enable pin is connected to
+  a power-on reset circuit via a relay. After a suitable period has elapsed,
+  the relay switches this pin from the reset circuit to an MCU output pin that
+  toggles the IC's output enable pin at predetermined intervals to control the
+  tone cadence. For example, the dial tone is a continuous tone, while the busy
+  signal is repeatedly turned on for 500ms and turned off 500ms. The output
+  tone is sent to the audio input pin of one of the eight SLICs via a CD4051
+  analog multiplexer.
+
+-------------------------------------------------------------------------------
+
+                                    Ringer
+
+-------------------------------------------------------------------------------
+
+  Eight of the MCU's GPIO pins are configured as outputs, each connected to the
+  ringing mode pin on one of the eight SLICs. These are used to select which
+  SLIC a ringer signal will be sent to. The MCU outputs a 25Hz square wave,
+  which is sent to the selected SLIC's polarity toggle pin via a CD4051 analog
+  multiplexer at the appropriate cadence (two seconds on, four seconds off, in
+  a repeating pattern).
+
+-------------------------------------------------------------------------------
+
+                                    Switch
+
+-------------------------------------------------------------------------------
+
+  At power up, the MCU's setup function executes a number of output operations
+  to ensure the 64 switches in each of the two MT8808 matrix switch ICs are all
+  turned off. The MCU then directs the matrices to connect pairs of stations to
+  establish telephone calls.
+
+-------------------------------------------------------------------------------
+
+                      Subscriber Line Interface Card (SLIC)
+
+-------------------------------------------------------------------------------
+
+  There are eight SLICs, each attached to a telephone set. The SLIC is not a
+  Droid, but is acted upon by the various Droids under the control of the main
+  script to set up and tear down calls between pairs of stations.
+
+-------------------------------------------------------------------------------
+
+                                   Main Script
+
+-------------------------------------------------------------------------------
+
 
 
