@@ -120,10 +120,9 @@
 
 -------------------------------------------------------------------------------
 
-  At power up, the MCU's setup function executes a number of output operations
-  to ensure the 64 switches in each of the two MT8808 matrix switch ICs are all
-  turned off. The MCU then directs the matrices to connect pairs of stations to
-  establish telephone calls.
+  At power up, the MCU resets the two MT8808 matrix switch ICs to ensure all
+  128 routing switches are turned off. The MCU then directs the matrices to
+  connect pairs of stations to  establish telephone calls.
 
 -------------------------------------------------------------------------------
 
@@ -141,5 +140,13 @@
 
 -------------------------------------------------------------------------------
 
+  After initializing all of the PHP modules in the system, the main script
+  enters an endless loop. On each iteration, the eight stations are checked to
+  see if they're on or off the hook. All decisions made within the loop are
+  based on that results of that check, the last known status of each of the PHP
+  modules, and other state data stored in the RAM cache.
 
+  Since there is only a single instance of each of the hardware resources
+  devoted to setting up and tearing down calls, suitable timeout periods are
+  employed to prevent any operation from tying up a resource indefinitely.
 
