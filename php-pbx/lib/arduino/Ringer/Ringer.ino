@@ -1,5 +1,6 @@
 #include <Messenger.h>
 
+char id[7]              = "ringer";
 byte waveOutPin         = 13;
 byte muxChSelPin0       = 12;
 byte muxChSelPin1       = 11;

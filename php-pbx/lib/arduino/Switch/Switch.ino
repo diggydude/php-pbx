@@ -1,5 +1,6 @@
 #include <Messenger.h>
 
+char id[7]     = "switch";
 byte axPin0    = 13;
 byte axPin1    = 12;
 byte axPin2    = 11;
