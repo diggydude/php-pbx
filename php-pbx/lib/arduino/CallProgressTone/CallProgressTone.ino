@@ -105,6 +105,17 @@ void setup()
 {
   Serial.begin(9600);
   message.attach(messageCompleted);
+  pinMode(toneSelPin0,        OUTPUT);
+  pinMode(toneSelPin1,        OUTPUT);
+  pinMode(toneSelPin2,        OUTPUT);
+  pinMode(toneSelPin3,        OUTPUT);
+  pinMode(toneEnablePin,      OUTPUT);
+  pinMode(muxChSelPin0,       OUTPUT);
+  pinMode(muxChSelPin1,       OUTPUT);
+  pinMode(muxChSelPin2,       OUTPUT);
+  pinMode(muxInhibitPin,      OUTPUT);
+  digitalWrite(toneEnablePin, HIGH);
+  digitalWrite(muxInhibitPin, LOW);
 } // setup
 
 void loop()
