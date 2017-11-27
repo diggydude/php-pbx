@@ -32,14 +32,14 @@
     public function connect($station)
     {
       $this->station = Pbx::instance()->getStation($station)->ordinal;
-      $this->droid->execute('C,' . $this->station);
+      $this->droid->execute('CONNECT ' . $this->station);
       $this->status      = self::STATUS_RINGING;
       $this->lastUpdated = time();
     } // connect
 
     public function disconnect()
     {
-      $this->droid->execute('D,0');
+      $this->droid->execute('DISCONNECT');
       $this->reset();
     } // disconnect
 
@@ -50,8 +50,7 @@
         case self::STATUS_TIMED_OUT;
           break;
         case self::STATUS_RINGING:
-          $now = time();
-          if (($now - $this->lastUpdated) > $this->timeout) {
+          if ((time() - $this->lastUpdated) > $this->timeout) {
             $this->status = self::STATUS_TIMED_OUT;
           }
           break;
