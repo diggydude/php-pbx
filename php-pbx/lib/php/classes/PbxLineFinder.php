@@ -5,6 +5,9 @@
   class PbxLineFinder
   {
 
+    const LINE_ON_HOOK  = false;
+    const LINE_OFF_HOOK = true;
+
     protected static
 
       $_instance;
@@ -24,11 +27,19 @@
 
     public function update()
     {
-      $lines = $this->droid->execute('STATUS?');
-      $this->lines = (strlen($lines) > 0)
-                   ? explode(",", $lines)
-                   : array();
+      $status      = $this->droid->execute('STATUS?');
+      $this->lines = array();
+      for ($i = 0; $i < 8; $i++) {
+        $this->lines[] = (($status >> i) == 1)
+                       ? self::LINE_OFF_HOOK
+                       : self::LINE_ON_HOOK;
+      }
     } // update
+
+    public function lineIsOffHook($line)
+    {
+      return ($this->lines[$line] == self::LINE_OFF_HOOK);
+    } // lineIsOffHook
 
     protected function __construct($params)
     {

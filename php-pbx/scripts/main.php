@@ -69,8 +69,7 @@
       if (($station = $pbx->getStation($i)) === null) {
         continue;
       }
-      $offHook = in_array($i, $finder->lines);
-      if ($offfHook) {
+      if ($finder->lineIsOffHook($i)) {
         switch ($station->status) {
           case PbxStation::STATUS_ON_HOOK:
             $station->setStatus(PbxStation::STATUS_OFF_HOOK);
@@ -78,6 +77,7 @@
           case PbxStation::STATUS_OFF_HOOK:
             if (($tone->status == PbxCallProgressTone::STATUS_READY)
                    && ($digits->status == PbxDigitReceiver::STATUS_READY)) {
+              $tone->disconnect(); // Pre-empt reorder tone
               $tone->connect($station->ordinal);
               $digits->connect($station->ordinal);
               $station->setStatus(PbxStation::STATUS_DIALING);
