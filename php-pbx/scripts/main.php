@@ -103,7 +103,7 @@
                 $tone->setTone(PbxCallProgressTone::TONE_NONE);
                 break;
               case PbxDigitReceiver::STATUS_COMPLETED:
-                // All four digits have vbeen dialed, so try the call
+                // All four digits have been dialed, so try the call
                 $number = $digits->number;
                 $digits->disconnect();
                 if (($callee = $pbx->getStation($number)) === null) {
@@ -143,7 +143,7 @@
             break;
           case PbxStation::STATUS_TALKING:
           case PbxStation::STATUS_WET_LIST:
-            // Station is either in a call or got blacklisted for
+            // Station is either on a call or got blacklisted for
             // being off hook without doing anything for too long
             break;
         }
