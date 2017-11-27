@@ -67,7 +67,7 @@
     $digits->update();
     for ($i = 0; $i < 8; $i++) {
       if (($station = $pbx->getStation($i)) === null) {
-        // No station is connected to that pont, so skip
+        // No station is registered for that line, so skip
         continue;
       }
       if ($finder->lineIsOffHook($i)) {
