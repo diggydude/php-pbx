@@ -55,8 +55,13 @@
         case self::TONE_DIAL:
         case self::TONE_RINGING:
         case self::TONE_BUSY:
-        case self::TONE_REORDER:
           $this->droid->execute('TONE ' . $tone);
+          break;
+        // When the reorder tone is set, the generator should be
+        // available for reuse next time it's requested.
+        case self::TONE_REORDER:
+          $this->droid->execute('TONE ' . self::TONE_REORDER);
+          $this->status = self::STATUS_READY;
           break;
         default:
           throw new Exception(__METHOD__ . ' > Unknown tone: ' . $tone);		
