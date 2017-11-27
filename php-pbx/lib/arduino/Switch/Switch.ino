@@ -51,6 +51,8 @@ void reset()
 
 void messageCompleted()
 {
+  byte caller = 0;
+  byte callee = 0;
   if (message.checkString("ID?")) {
     Serial.println(id);
   }
@@ -58,10 +60,14 @@ void messageCompleted()
     reset();
   }
   else if (message.checkString("CONNECT")) {
-    connect(message.readInt(), message.readInt());
+	caller = message.readInt();
+	callee = message.readInt();
+    connect(caller, callee);
   }
   else if (message.checkString("DISCONNECT")) {
-    disconnect(message.readInt(), message.readInt());
+	caller = message.readInt();
+	callee = message.readInt();
+    disconnect(caller, callee);
   }
 } // messageCompleted
 

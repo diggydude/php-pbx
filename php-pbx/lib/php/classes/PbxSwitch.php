@@ -27,14 +27,14 @@
     public function connect($caller, $callee)
     {
       $route = $this->getRoute($caller, $callee);
-      $this->droid->execute('C,' . $route->ax . ',' . $route->ay);
+      $this->droid->execute('CONNECT ' . $route->ax . ' ' . $route->ay);
       $this->markRouteBusy($route);
     } // connect
 
     public function disconnect($caller, $callee)
     {
       $route = $this->getRoute($caller, $callee);
-      $this->droid->execute('D,' . $route->ax . ',' . $route->ay);
+      $this->droid->execute('DISCONNECT ' . $route->ax . ' ' . $route->ay);
       $this->markRouteNotBusy($route);
     } // disconnect
 
