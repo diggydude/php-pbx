@@ -12,13 +12,7 @@
 
   $config = json_decode(file_get_contents(__DIR__ . '/config.json'));
 
-  $cache  = Cache::connect(
-              (object) array(
-                'id'      => $config->cache->id,
-                'ttl'     => $config->cache->ttl,
-                'servers' => $config->cache->servers
-              );
-            );
+  $cache  = Cache::connect($config->cache);
 
   $pbx    = Pbx::instance(
               (object) array(
@@ -61,10 +55,7 @@
             );
 
   while (true) {
-    $tone->update();
-    $ringer->update();
     $finder->update();
-    $digits->update();
     for ($i = 0; $i < 8; $i++) {
       if (($station = $pbx->getStation($i)) === null) {
         // No station is registered for that line, so skip
@@ -184,10 +175,9 @@
             break;
           case PbxStation::STATUS_TALKING:
             // Station was on a call, then went on hook, so tear down the call
-            $route = $fabric->getConnection($station->ordinal);
-            $fabric->disconnect($route);
-            $pbx->getStation($route->ax)->setStatus(PbxStation::STATUS_ON_HOOK);
-            $pbx->getStation($route->ay)->setStatus(PbxStation::STATUS_ON_HOOK);
+            $route = $fabric->findConnection($station->ordinal);
+            $fabric->disconnect($rote->ax, $route->ay);
+            $station->setStatus(PbxStation::STATUS_ON_HOOK);
             break;
         }
       } // if/else
