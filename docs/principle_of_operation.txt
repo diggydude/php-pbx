@@ -148,6 +148,7 @@
   as determined by querying the Droid itself.
 
   Since there is only a single instance of each of the hardware resources
-  devoted to setting up and tearing down calls, suitable timeout periods are
-  employed to prevent any operation from tying up a resource indefinitely.
+  devoted to setting up a call (i.e., call progress tone generator, digit
+  receiver, and ringer), suitable timeout periods are employed to prevent a
+  call attempt from tying up a resource indefinitely.
 
