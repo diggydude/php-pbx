@@ -8,9 +8,9 @@ const byte STATUS_COMPLETED = 3;
 char id[14]         = "digitreceiver";
 byte muxInhibitPin  = 12;
 byte muxComIoPin    = 11;
-byte muxChSelAPin   = 8;
-byte muxChSelBPin   = 9;
-byte muxChSelCPin   = 10;
+byte muxChSelPin0   = 8;
+byte muxChSelPin1   = 9;
+byte muxChSelPin2   = 10;
 byte i;
 int  count          = 0;
 int  digitCaptured  = 0;
@@ -52,9 +52,9 @@ void messageCompleted()
 
 void connect(byte channel)
 {
-  digitalWrite(muxChSelAPin,  bitRead(channel, 0));
-  digitalWrite(muxChSelBPin,  bitRead(channel, 1));
-  digitalWrite(muxChSelCPin,  bitRead(channel, 2));
+  digitalWrite(muxChSelPin0,  bitRead(channel, 0));
+  digitalWrite(muxChSelPin1,  bitRead(channel, 1));
+  digitalWrite(muxChSelPin2,  bitRead(channel, 2));
   digitalWrite(muxInhibitPin, HIGH);
 } // connect
 
@@ -83,9 +83,9 @@ void setup()
   Serial.begin(9600);
   message.attach(messageCompleted);
   pinMode(muxInhibitPin, OUTPUT);
-  pinMode(muxChSelAPin,  OUTPUT);
-  pinMode(muxChSelBPin,  OUTPUT);
-  pinMode(muxChSelCPin,  OUTPUT);
+  pinMode(muxChSelPin0,  OUTPUT);
+  pinMode(muxChSelPin1,  OUTPUT);
+  pinMode(muxChSelPin2,  OUTPUT);
   pinMode(muxComIoPin,   INPUT);
 } // setup
 
