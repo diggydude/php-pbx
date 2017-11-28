@@ -67,11 +67,11 @@
 
 -------------------------------------------------------------------------------
 
-  Eight of the MCU's GPIO pins are configured as inputs, and is connected to
-  the SHK pin of a SLIC. The MCU scans each of the pins round robin, debouncing
-  them for 10ms to eliminate spurious "off hook" signals. When requested, a
-  byte is sent back to the main script, with each bit either set or cleared
-  according to whether the corresponding SLIC is off hook or on hook.
+  Eight of the MCU's GPIO pins are configured as inputs, each connected to the
+  SHK (on/off hook) pin of a SLIC. The MCU scans each of the pins round robin,
+  debouncing them for 10ms to eliminate spurious "off hook" signals. The main
+  script may then query the Line Finder PHP module to determinbe whether a
+  given SLIC is off hook or on hook.
 
 -------------------------------------------------------------------------------
 
@@ -79,7 +79,7 @@
 
 -------------------------------------------------------------------------------
 
-  The MCU connects to one of the eight SLICs' SHK pin via a CD4051 1-of-8
+  The MCU connects to the SHK pin of one of the SLICs via a CD4051 1-of-8
   analog multiplexer. It counts pulses until the dial rotation period expires,
   then puts the resulting number (0 - 9) into a four-element array. The main
   script polls the Digit Receiver for status updates, and requests the
@@ -122,7 +122,7 @@
 
   At power up, the MCU resets the two MT8808 matrix switch ICs to ensure all
   128 routing switches are turned off. The MCU then directs the matrices to
-  connect pairs of stations to  establish telephone calls.
+  connect pairs of stations to establish telephone calls.
 
 -------------------------------------------------------------------------------
 
