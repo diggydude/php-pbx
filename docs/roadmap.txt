@@ -1,0 +1,25 @@
++-----------------------------------------------------------------------------+
+|                                                                             |
+|                                   Roadmap                                   |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+                      Direct Access Arrangement (DAA) Module
+
+-------------------------------------------------------------------------------
+
+  A DAA module is planned, but it will not be implemented until the core
+  functionality is thoroughly tested and debugged. The DAA will initially
+  provide PBX extensions with access to an outside line. It will not answer
+  incoming calls, play a voice menu, record messages, or route callers to an
+  inside extension. If you wish to implement these features, please fork the
+  repository.
+
+  The DAA will be a Droid built around the Silvertel AG2120 PSTN interface card
+  or a functional replacement for same. A couple of components not mentioned in
+  the requirements document will be needed to complete the cricuit:
+
+  (1) One TR600-150 resettable fuse
+
+  (2) One P2600EBL sidactor
+
