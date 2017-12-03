@@ -17,7 +17,7 @@
 
   The DAA will be a Droid built around the Silvertel AG2120 PSTN interface card
   or a functional replacement for same. A couple of components not mentioned in
-  the requirements document will be needed to complete the cricuit:
+  the requirements document will be needed to complete the circuit:
 
   (1) One TR600-150 resettable fuse
 
