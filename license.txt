@@ -8,7 +8,7 @@ neither express nor implied warranty as regards merchantability or fitness
 for any particular use. The end user assumes responsibility for all
 consequences arising from the use of this software.
 
-Use of this software in whole or in in part for any commercial purpose,
+Use of this software in whole or in part for any commercial purpose,
 including use in undistributed in-house applications, obligates the user
 to "Pay It Forward" by contributing monetarily or in kind to such open
 source software and/or hardware project(s) as the user may choose.
@@ -26,3 +26,4 @@ This software may be freely copied and distributed as long as said copies
 are accompanied by this copyright notice and licensing agreement. This
 document shall constitute the entirety of the agreement between the
 software's author(s) and the end user.
+
