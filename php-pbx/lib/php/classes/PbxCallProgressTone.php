@@ -1,5 +1,6 @@
 <?php
 
+  require_once(__DIR__ . '/Pbx.php');
   require_once(__DIR__ . '/Droid.php');
 
   class PbxCallProgressTone

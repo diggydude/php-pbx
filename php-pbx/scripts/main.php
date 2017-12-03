@@ -71,7 +71,6 @@
           case PbxStation::STATUS_OFF_HOOK:
             // Station was already off hook, so initiate call
             // if resources are available
-            $tone->update();
             $digits->update();
             if (($tone->status == PbxCallProgressTone::STATUS_READY)
                    && ($digits->status == PbxDigitReceiver::STATUS_READY)) {
