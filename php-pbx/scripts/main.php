@@ -175,7 +175,7 @@
           case PbxStation::STATUS_TALKING:
             // Station was on a call, then went on hook, so tear down the call
             $route = $fabric->findConnection($station->ordinal);
-            $fabric->disconnect($rote->ax, $route->ay);
+            $fabric->disconnect($route->ax, $route->ay);
             $station->setStatus(PbxStation::STATUS_ON_HOOK);
             break;
         }
