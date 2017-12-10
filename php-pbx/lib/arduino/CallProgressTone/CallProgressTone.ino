@@ -6,6 +6,7 @@ const byte TONE_RINGING = 2;
 const byte TONE_BUSY    = 3;
 const byte TONE_REORDER = 4;
 
+char id[13]        = "callprogress";
 byte relayPin      = 13;
 byte toneSelPin0   = 12;
 byte toneSelPin1   = 11;
@@ -48,7 +49,7 @@ void messageComplete()
   else if (message.checkString("TONE")) {
     setTone(message.readInt());
   }
-} // messageCompolete
+} // messageComplete
 
 void connect(byte channel)
 {
@@ -106,7 +107,7 @@ void setTone(byte tone)
 void setup()
 {
   Serial.begin(9600);
-  message.attach(messageCompleted);
+  message.attach(messageComplete);
   pinMode(relayPin,           OUTPUT);
   pinMode(toneSelPin0,        OUTPUT);
   pinMode(toneSelPin1,        OUTPUT);
