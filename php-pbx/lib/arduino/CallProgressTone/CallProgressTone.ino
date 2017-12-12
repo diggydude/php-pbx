@@ -57,20 +57,21 @@ void connect(byte channel)
   digitalWrite(muxChSelPin0,  bitRead(channel, 0));
   digitalWrite(muxChSelPin1,  bitRead(channel, 1));
   digitalWrite(muxChSelPin2,  bitRead(channel, 2));
-  digitalWrite(muxInhibitPin, HIGH);
+  digitalWrite(muxInhibitPin, LOW);
   Serial.print("Connected to: ");
   Serial.println(channel);
 } // connect
 
 void disconnect()
 {
-  digitalWrite(muxInhibitPin, LOW);
-  setTone(TONE_REORDER);
+  digitalWrite(muxInhibitPin, HIGH);
   Serial.println("Disconnected");
 } // disconnect
 
 void setTone(byte tone)
 {
+  digitalWrite(toneEnablePin, HIGH);
+  delay(250);
   switch (tone) {
     case TONE_DIAL:
       digitalWrite(toneSelPin0, LOW);
@@ -97,6 +98,7 @@ void setTone(byte tone)
       digitalWrite(toneSelPin3, LOW);
       break;
   }
+  delay(250);
   currentTone  = tone;
   cadenceState = 1;
   lastChanged  = millis();
