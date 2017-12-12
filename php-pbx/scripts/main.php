@@ -90,7 +90,7 @@
                 break;
               case PbxDigitReceiver::STATUS_RECEIVING:
                 // First digit has been dialed, so turn off dial tone
-                $tone->setTone(PbxCallProgressTone::TONE_NONE);
+                $tone->mute();
                 break;
               case PbxDigitReceiver::STATUS_COMPLETED:
                 // All four digits have been dialed, so try the call

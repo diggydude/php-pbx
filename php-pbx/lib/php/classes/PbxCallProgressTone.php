@@ -6,11 +6,10 @@
   class PbxCallProgressTone
   {
 
-    const TONE_NONE    = 0;
-    const TONE_DIAL    = 1;
-    const TONE_RINGING = 2;
-    const TONE_BUSY    = 3;
-    const TONE_REORDER = 4;
+    const TONE_DIAL    = 0;
+    const TONE_RINGING = 1;
+    const TONE_BUSY    = 2;
+    const TONE_REORDER = 3;
     const STATUS_READY = 0;
     const STATUS_BUSY  = 1;
 	
@@ -21,7 +20,6 @@
     protected
 
       $droid,	
-      $tone,
       $status,
       $station;
 	
@@ -38,41 +36,46 @@
       $this->status  = self::STATUS_BUSY;
       $this->station = Pbx::instance()->getStation($station)->ordinal;
       $this->setTone(self::TONE_DIAL);
-      $this->droid->execute('CONNECT ' . $this->station);
+      return $this->droid->execute('CONNECT ' . $this->station);
     } // connect
 
     public function disconnect()
     {
-      $this->setTone(self::TONE_NONE);
-      $this->droid->execute('DISCONNECT');
+      $response      = $this->droid->execute('DISCONNECT');
       $this->station = null;
-      $this->status = self::STATUS_READY;
+      $this->status  = self::STATUS_READY;
+      return $response;
     } // disconnect
 	
     public function setTone($tone)
     {
       switch ($tone) {
-        case self::TONE_NONE:
         case self::TONE_DIAL:
         case self::TONE_RINGING:
         case self::TONE_BUSY:
-          $this->droid->execute('TONE ' . $tone);
+          $response = $this->droid->execute('TONE ' . $tone);
           break;
         // When the reorder tone is set, the generator should be
         // available for reuse next time it's requested.
         case self::TONE_REORDER:
-          $this->droid->execute('TONE ' . self::TONE_REORDER);
+          $response = $this->droid->execute('TONE ' . self::TONE_REORDER);
           $this->status = self::STATUS_READY;
           break;
         default:
           throw new Exception(__METHOD__ . ' > Unknown tone: ' . $tone);		
       }
+      return $response;
     } // setTone
+
+    public function mute()
+    {
+      return $this->droid->execute('MUTE');
+    } // mute
 
     protected function __construct($params)
     {
       $this->droid   = new Droid($params->droid);
-      $this->tone    = self::TONE_NONE;
+      $this->mute();
       $this->station = null;
       $this->status  = self::STATUS_READY;
     } // __construct

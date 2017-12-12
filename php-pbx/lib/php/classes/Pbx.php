@@ -1,6 +1,7 @@
 <?php
 
   require_once(__DIR__ . '/Cache.php');
+  require_once(__DIR__ . '/PbxStation.php');
 
   class Pbx
   {
@@ -40,7 +41,7 @@
           if (($ordinal < 0) || ($ordinal > 7)) {
             throw new Exception(__METHOD__ . ' > Ordinal must be between 0 and 7.');
           }
-          if (!preg_match($number, '/^[2-9]{1}\d{3}$/')) {
+          if (!preg_match('/^[2-9]{1}\d{3}$/', $number)) {
             throw new Exception(__METHOD__ . ' > Number must be a 4-digit integer, and may not start with 0 or 1.');
           }
           $station = new PbxStation(

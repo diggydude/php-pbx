@@ -1,23 +1,22 @@
 #include <Messenger.h>
 
-const byte TONE_NONE    = 0;
-const byte TONE_DIAL    = 1;
-const byte TONE_RINGING = 2;
-const byte TONE_BUSY    = 3;
-const byte TONE_REORDER = 4;
+const byte TONE_DIAL    = 0;
+const byte TONE_RINGING = 1;
+const byte TONE_BUSY    = 2;
+const byte TONE_REORDER = 3;
 
 char id[13]        = "callprogress";
-byte relayPin      = 13;
-byte toneSelPin0   = 12;
-byte toneSelPin1   = 11;
-byte toneSelPin2   = 10;
-byte toneSelPin3   = 9;
+byte relayPin      = 7;
+byte toneSelPin0   = 9;
+byte toneSelPin1   = 10;
+byte toneSelPin2   = 11;
+byte toneSelPin3   = 12;
 byte toneEnablePin = 8;
-byte muxChSelPin0  = 7;
-byte muxChSelPin1  = 6;
+byte muxChSelPin0  = 3;
+byte muxChSelPin1  = 4;
 byte muxChSelPin2  = 5;
-byte muxInhibitPin = 4;
-byte currentTone   = TONE_NONE;
+byte muxInhibitPin = 6;
+byte currentTone   = TONE_REORDER;
 int  cadenceState  = -1;
 long lastChanged   = 0;
 Messenger message  = Messenger();
@@ -27,8 +26,7 @@ struct Cadence {
   unsigned int offTime;
 };
 
-Cadence cadences[5] = {
-  {0,     65535}, // none
+Cadence cadences[4] = {
   {65535, 0},     // dial
   {500,   500},   // busy
   {2000,  4000},  // ringing
@@ -49,6 +47,9 @@ void messageComplete()
   else if (message.checkString("TONE")) {
     setTone(message.readInt());
   }
+  else if (message.checkString("MUTE")) {
+    mute();
+  } 
 } // messageComplete
 
 void connect(byte channel)
@@ -57,13 +58,15 @@ void connect(byte channel)
   digitalWrite(muxChSelPin1,  bitRead(channel, 1));
   digitalWrite(muxChSelPin2,  bitRead(channel, 2));
   digitalWrite(muxInhibitPin, HIGH);
-  lastChanged = millis();
+  Serial.print("Connected to: ");
+  Serial.println(channel);
 } // connect
 
 void disconnect()
 {
   digitalWrite(muxInhibitPin, LOW);
-  setTone(TONE_NONE);
+  setTone(TONE_REORDER);
+  Serial.println("Disconnected");
 } // disconnect
 
 void setTone(byte tone)
@@ -74,35 +77,39 @@ void setTone(byte tone)
       digitalWrite(toneSelPin1, LOW);
       digitalWrite(toneSelPin2, LOW);
       digitalWrite(toneSelPin3, LOW);
-      cadenceState = 1;
       break;
     case TONE_BUSY:
       digitalWrite(toneSelPin0, LOW);
       digitalWrite(toneSelPin1, HIGH);
       digitalWrite(toneSelPin2, HIGH);
       digitalWrite(toneSelPin3, LOW);
-      cadenceState = 1;
       break;
     case TONE_RINGING:
       digitalWrite(toneSelPin0, LOW);
       digitalWrite(toneSelPin1, LOW);
       digitalWrite(toneSelPin2, HIGH);
       digitalWrite(toneSelPin3, HIGH);
-      cadenceState = 1;
       break;
     case TONE_REORDER:
       digitalWrite(toneSelPin0, LOW);
       digitalWrite(toneSelPin1, HIGH);
       digitalWrite(toneSelPin2, HIGH);
       digitalWrite(toneSelPin3, LOW);
-      cadenceState = 1;
-      break;
-    case TONE_NONE:
-    default:
-      cadenceState = -1;
       break;
   }
+  digitalWrite(muxInhibitPin, LOW);
+  cadenceState = 1;
+  lastChanged  = millis();
+  digitalWrite(toneEnablePin, LOW);
+  Serial.print("Set tone to: ");
+  Serial.println(tone);
 } // setTone
+
+void mute()
+{
+  digitalWrite(muxInhibitPin, HIGH);
+  Serial.println("Muted");
+} // mute
 
 void setup()
 {
@@ -121,7 +128,8 @@ void setup()
   digitalWrite(toneEnablePin, HIGH);
   digitalWrite(muxInhibitPin, LOW);
   delay(250);
-  digitalWrite(relayPin, HIGH);
+  digitalWrite(relayPin,      HIGH);
+  setTone(TONE_REORDER);
 } // setup
 
 void loop()
