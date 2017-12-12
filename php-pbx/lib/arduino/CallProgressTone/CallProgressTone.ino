@@ -97,9 +97,10 @@ void setTone(byte tone)
       digitalWrite(toneSelPin3, LOW);
       break;
   }
-  digitalWrite(muxInhibitPin, LOW);
+  currentTone  = tone;
   cadenceState = 1;
   lastChanged  = millis();
+  digitalWrite(muxInhibitPin, LOW);
   digitalWrite(toneEnablePin, LOW);
   Serial.print("Set tone to: ");
   Serial.println(tone);
