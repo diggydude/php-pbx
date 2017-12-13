@@ -32,9 +32,9 @@
   Ringer: Connects to the called station and supplies signals that cause the
   telephone to ring.
 
-  Switching Fabric: A pair of 8x8 matrix switches that connect a calling
-  station's audio output to the called station's audio input, and vice versa.
-  The switches employed in our PBX are the Zarlink MT8808.
+  Switching Fabric: An 8x8 matrix switch that connects a calling station's
+  audio output to the called station's audio input, and vice versa.  The
+  switch employed in our PBX is the Zarlink MT8808.
 
   Main Script: Initializes the above components and coordinates their
   operations in an endless loop to implement the telephone exchange.
@@ -70,8 +70,8 @@
   Eight of the MCU's GPIO pins are configured as inputs, each connected to the
   SHK (on/off hook) pin of a SLIC. The MCU scans each of the pins round robin,
   debouncing them for 10ms to eliminate spurious "off hook" signals. The main
-  script may then query the Line Finder PHP module to determinbe whether a
-  given SLIC is off hook or on hook.
+  script may then query the Line Finder PHP module to determine whether a given
+  SLIC is off hook or on hook.
 
 -------------------------------------------------------------------------------
 
@@ -120,9 +120,9 @@
 
 -------------------------------------------------------------------------------
 
-  At power up, the MCU resets the two MT8808 matrix switch ICs to ensure all
-  128 routing switches are turned off. The MCU then directs the matrices to
-  connect pairs of stations to establish telephone calls.
+  At power up, the MCU resets the MT8808 matrix switch IC to ensure all 64
+  routing switches are turned off. The MCU then directs the matrix to connect
+  pairs of stations to establish telephone calls.
 
 -------------------------------------------------------------------------------
 

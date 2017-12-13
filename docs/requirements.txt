@@ -24,7 +24,7 @@
 
   (5)  Eight Shenzhen Ring&Tone KS0835F subscriber line interface cards.
 
-  (6)  Two Zarlink MT8808 8x8 analog switch matrix ICs.
+  (6)  One Zarlink MT8808 8x8 analog switch matrix IC.
 
   (7)  One Clare M-991 call progress tone generator IC.
 
