@@ -107,11 +107,11 @@
 
 -------------------------------------------------------------------------------
 
-  A 555 timer is used to generate a 25Hz square wave. This signal is sent to
-  one of the SLICs via a CD74HC238 demultiplexer. A second CD74HC236 sends a
-  gate signal to the selected SLIC's ring mode pin. The gate  signal is toggled
-  at the appropriate cadence of two seconds on, four seconds off, in a
-  repeating pattern.
+  A 555 timer circuit generates a 20Hz to 25Hz square wave. This signal is sent
+  to the polarity reversal pin of one of the SLICs via a CD74HC238
+  demultiplexer. A second  CD74HC236 sends a gate signal to the selected SLIC's
+  ring mode pin. The gate signal is toggled at the appropriate cadence of two
+  seconds on, four seconds off, in a repeating pattern.
 
 -------------------------------------------------------------------------------
 
