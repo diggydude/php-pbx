@@ -107,12 +107,11 @@
 
 -------------------------------------------------------------------------------
 
-  Eight of the MCU's GPIO pins are configured as outputs, each connected to the
-  ringing mode pin on one of the eight SLICs. These are used to select which
-  SLIC a ringer signal will be sent to. The MCU outputs a 25Hz square wave,
-  which is sent to the selected SLIC's polarity toggle pin via a CD4051 analog
-  multiplexer at the appropriate cadence (two seconds on, four seconds off, in
-  a repeating pattern).
+  A 555 timer is used to generate a 25Hz square wave. This signal is sent to
+  one of the SLICs via a CD74HC238 demultiplexer. A second CD74HC236 sends a
+  gate signal to the selected SLIC's ring mode pin. The gate  signal is toggled
+  at the appropriate cadence of two seconds on, four seconds off, in a
+  repeating pattern.
 
 -------------------------------------------------------------------------------
 

@@ -28,7 +28,7 @@
 
   (7)  One Clare M-991 call progress tone generator IC.
 
-  (8)  Two CD4051 1-of-8 analog multiplexer/demultiplexer ICs.
+  (8)  One  CD4051 1-of-8 analog multiplexer/demultiplexer ICs.
 
   (9)  One SPDT relay actuated by 5VDC.
 
@@ -36,15 +36,19 @@
 
   (11) One 3.58MHz colorburst crystal for M-991 timing.
 
-  (12) Eight P3100EBL thyristors. This is the TO-92 version of the P3100SC
+  (12) One 555 timer.
+
+  (13) Two CD74HC238 demultiplexers.
+
+  (14) Eight P3100EBL thyristors. This is the TO-92 version of the P3100SC
        called for in the SLIC schematic. It's a lot cheaper and easier to find
        than the SMD version.
 
-  (13) Eight P6KE82 zener diodes. (I used the bidirectional P6KE82CH version.)
+  (15) Eight P6KE82 zener diodes. (I used the bidirectional P6KE82CH version.)
 
-  (14) Five USB mini cables to connect the Arduinos to the USB hub.
+  (16) Five USB mini cables to connect the Arduinos to the USB hub.
 
-  (15) A good assortment of resistors, ceramic and electrolytic capacitors,
+  (17) A good assortment of resistors, ceramic and electrolytic capacitors,
        diodes, male and female headers, stripboard, 22 AWG hookup wire, and
        female-to-female ribbon cables.
 
