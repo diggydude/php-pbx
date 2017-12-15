@@ -16,7 +16,7 @@ sketch by guidomax, found here:
   http://www.instructables.com/id/Interface-a-rotary-phone-dial-to-an-Arduino/
 
 The 555 timer circuit for the Ringer was designed using Jeff's 555 Timer
-Calculator and schematic found here:
+Calculator and schematic, found here:
 
   http://houseofjeff.com/555-timer-oscillator-frequency-calculator/
 
