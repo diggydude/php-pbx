@@ -40,6 +40,8 @@ void connect(byte channel)
   lastChanged = millis();
   digitalWrite(cadenceTogglePin, HIGH);
   digitalWrite(waveInhibitPin,   LOW);
+  Serial.print("Connected to: ");
+  Serial.println(channel);
 } // connect
 
 void disconnect()
@@ -47,6 +49,7 @@ void disconnect()
   currentChannel = -1;
   digitalWrite(cadenceTogglePin, LOW);
   digitalWrite(waveInhibitPin,   HIGH);
+  Serial.println("Disconnected");
 } // disconnect
 
 void setup()

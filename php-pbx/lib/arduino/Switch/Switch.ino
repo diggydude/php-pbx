@@ -25,6 +25,17 @@ void connect(byte caller, byte callee)
   digitalWrite(strobePin, HIGH);
   delay(1);
   digitalWrite(strobePin, LOW);
+  digitalWrite(resetPin,  LOW);
+  digitalWrite(axPin0,    bitRead(callee, 0));
+  digitalWrite(axPin1,    bitRead(callee, 1));
+  digitalWrite(axPin2,    bitRead(callee, 2));
+  digitalWrite(ayPin0,    bitRead(caller, 0));
+  digitalWrite(ayPin1,    bitRead(caller, 1));
+  digitalWrite(ayPin2,    bitRead(caller, 2));
+  digitalWrite(dataPin,   HIGH);
+  digitalWrite(strobePin, HIGH);
+  delay(1);
+  digitalWrite(strobePin, LOW);
 } // connect
 
 void disconnect(byte caller, byte callee)
@@ -36,6 +47,17 @@ void disconnect(byte caller, byte callee)
   digitalWrite(ayPin0,    bitRead(callee, 0));
   digitalWrite(ayPin1,    bitRead(callee, 1));
   digitalWrite(ayPin2,    bitRead(callee, 2));
+  digitalWrite(dataPin,   LOW);
+  digitalWrite(strobePin, HIGH);
+  delay(1);
+  digitalWrite(strobePin, LOW);
+  digitalWrite(resetPin,  LOW);
+  digitalWrite(axPin0,    bitRead(callee, 0));
+  digitalWrite(axPin1,    bitRead(callee, 1));
+  digitalWrite(axPin2,    bitRead(callee, 2));
+  digitalWrite(ayPin0,    bitRead(caller, 0));
+  digitalWrite(ayPin1,    bitRead(caller, 1));
+  digitalWrite(ayPin2,    bitRead(caller, 2));
   digitalWrite(dataPin,   LOW);
   digitalWrite(strobePin, HIGH);
   delay(1);
@@ -60,13 +82,13 @@ void messageCompleted()
     reset();
   }
   else if (message.checkString("CONNECT")) {
-	caller = message.readInt();
-	callee = message.readInt();
+    caller = message.readInt();
+    callee = message.readInt();
     connect(caller, callee);
   }
   else if (message.checkString("DISCONNECT")) {
-	caller = message.readInt();
-	callee = message.readInt();
+    caller = message.readInt();
+    callee = message.readInt();
     disconnect(caller, callee);
   }
 } // messageCompleted
