@@ -15,4 +15,12 @@ sketch by guidomax, found here:
 
   http://www.instructables.com/id/Interface-a-rotary-phone-dial-to-an-Arduino/
 
+The 555 timer circuit for the Ringer was designed using Jeff's 555 Timer
+Calculator and schematic found here:
+
+  http://houseofjeff.com/555-timer-oscillator-frequency-calculator/
+
+Plug a value between 20 and 25 Hertz into the frequency field and choose the
+result that yields the duty cycle closet to 50 percent. (I used 22Hz and chose
+the result that yields a 50.1% duty cycle.)
 
