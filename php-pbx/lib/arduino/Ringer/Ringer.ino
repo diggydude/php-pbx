@@ -1,19 +1,19 @@
 #include <Messenger.h>
 
-char id[7]              = "ringer";
-byte waveOutPin         = 13;
-byte muxChSelPin0       = 12;
-byte muxChSelPin1       = 11;
-byte muxChSelPin2       = 10;
-byte muxInhibitPin      = 9;
-byte ringModePins[8]    = {8, 7, 6, 5, 4, 3, 2, 1};
-byte currentChannel     = -1;
-byte i                  = 0;
-int  waveState          = -1
-long waveLastChanged    = 0;
-byte cadenceState       = -1;
-long cadenceLastChanged = 0;
-Messenger message = Messenger();
+char id[7]            = "ringer";
+byte waveChSelPin0    = 5;
+byte waveChSelPin1    = 6;
+byte waveChSelPin2    = 7;
+byte waveInhibitPin   = 8;
+byte cadenceChSelPin0 = 9;
+byte cadenceChSelPin1 = 10;
+byte cadenceChSelPin2 = 11;
+byte cadenceTogglePin = 12;
+byte currentChannel   = -1;
+byte i                = 0;
+byte cadenceState     = -1;
+long lastChanged      = millis();
+Messenger message     = Messenger();
 
 void messageCompleted()
 {
@@ -31,34 +31,39 @@ void messageCompleted()
 void connect(byte channel)
 {
   currentChannel = channel;
-  digitalWrite(muxChSelPin0,          bitRead(channel, 0));
-  digitalWrite(muxChSelPin1,          bitRead(channel, 1));
-  digitalWrite(muxChSelPin2,          bitRead(channel, 2));
-  digitalWrite(ringModePins[channel], HIGH);
-  digitalWrite(muxInhibitPin,         HIGH);
+  digitalWrite(waveChSelPin0,    bitRead(channel, 0));
+  digitalWrite(waveChSelPin1,    bitRead(channel, 1));
+  digitalWrite(waveChSelPin2,    bitRead(channel, 2));
+  digitalWrite(cadenceChSelPin0, bitRead(channel, 0));
+  digitalWrite(cadenceChSelPin1, bitRead(channel, 1));
+  digitalWrite(cadenceChSelPin2, bitRead(channel, 2));
+  lastChanged = millis();
+  digitalWrite(cadenceTogglePin, HIGH);
+  digitalWrite(waveInhibitPin,   LOW);
 } // connect
 
 void disconnect()
 {
-  digitalWrite(ringModePins[currentChannel], LOW);
-  digitalWrite(muxInhibitPin,                LOW);
   currentChannel = -1;
+  digitalWrite(cadenceTogglePin, LOW);
+  digitalWrite(waveInhibitPin,   HIGH);
 } // disconnect
 
 void setup()
 {
   Serial.begin(9600);
   message.attach(messageCompleted);
-  pinMode(waveOutPin,         OUTPUT);
-  pinMode(muxSelPin0,         OUTPUT);
-  pinMode(muxSelPin1,         OUTPUT);
-  pinMode(muxSelPin2,         OUTPUT);
-  pinMode(muxInhibitPin,      OUTPUT);
-  digitalWrite(muxInhibitPin, LOW);
-  for (i = 0; i < 8; i++) {
-    pinMode(ringModePins[i],      OUTPUT);
-    digitalWrite(ringModePins[i], LOW);
-  }
+  pinMode(waveChSelPin0,    OUTPUT);
+  pinMode(waveChSelPin1,    OUTPUT);
+  pinMode(waveChSelPin2,    OUTPUT);
+  pinMode(cadenceChSelPin0, OUTPUT);
+  pinMode(cadenceChSelPin1, OUTPUT);
+  pinMode(cadenceChSelPin2, OUTPUT);
+  pinMode(waveInhibitPin,   OUTPUT);
+  pinMode(cadenceTogglePin, OUTPUT);
+  lastChanged = millis();
+  digitalWrite(cadenceTogglePin, LOW);
+  digitalWrite(waveInhibitPin,   HIGH);
 } // setup
 
 void loop()
@@ -67,35 +72,23 @@ void loop()
     message.process(Serial.read());
   }
   if (cadenceState < 0) {
-    if ((millis() - cadenceLastChanged) > 4000) {
-      cadenceState       = -cadenceState;
-      cadenceLastChanged = millis();
+    if ((millis() - lastChanged) > 4000) {
+      cadenceState = -cadenceState;
+      lastChanged  = millis();
       if (currentChannel > -1) {
-        digitalWrite(ringModePins[currentChannel], HIGH);
+        digitalWrite(cadenceTogglePin, HIGH);
+        digitalWrite(waveInhibitPin,   LOW);
       }
     }
   }
   else {
-    if ((millis() - cadenceLastChanged) > 2000) {
-      cadenceState       = -cadenceState;
-      cadenceLastChanged = millis();
+    if ((millis() - lastChanged) > 2000) {
+      cadenceState = -cadenceState;
+      lastChanged  = millis();
       if (currentChannel > -1) {
-        digitalWrite(ringModePins[currentChannel], LOW);
+        digitalWrite(cadenceTogglePin, LOW);
+        digitalWrite(waveInhibitPin,   HIGH);
       }
-    }
-  }
-  if (waveState < 0) {
-    if ((millis() - waveLastChanged) > 20) {
-      waveState       = -waveState;
-      waveLastChanged = millis();
-      digitalWrite(waveOutPin, HIGH);
-    }
-  }
-  else {
-    if ((millis() - waveLastChanged) > 20) {
-      waveState       = -waveState;
-      waveLastChanged = millis();
-      digitalWrite(waveOutPin, LOW);
     }
   }
 } // loop
