@@ -1,7 +1,7 @@
 #include <Messenger.h>
 
 #define USE_DISPLAY 1
-#ifdef
+#ifdef USE_DISPLAY
 #include <Wire.h>
 const byte displayBusAddr   = 0x20;
 const byte segmentsDirAddr  = 0x00;
