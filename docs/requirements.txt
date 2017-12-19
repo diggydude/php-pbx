@@ -52,8 +52,8 @@
        diodes, male and female headers, stripboard, 22 AWG hookup wire, and
        female-to-female ribbon cables.
 
-  NOTE: The pins on the SLICs are too short for the usual female headers. Look
-  for some more shallow ones on Ebay.
+  OPTIONAL: Four-digit 7-segment LED display and MCP23017 dual port expander
+  for debugging and/or adding blinkenlights to the digit receiver.
 
   NOTE: This list may not be exhaustive. Check the schematics carefully to see
   if you'll need anything else I might've missed here. These are the items that
