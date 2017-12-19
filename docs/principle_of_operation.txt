@@ -86,6 +86,14 @@
   four-digit extension number in the array when the Digit Receiver indicates
   dialing has completed, i.e., four digits have been stored.
 
+  An alternate version of the DigitReceiver sketch incorporating a 4-digit
+  7-segment LED display has been provided. The display is driven by an MCP23017
+  I2C dual port expander IC. The display used is a 12-pin common anode device
+  with "HS410561K-32" printed on its bottom edge. Given the wide variety of
+  displays available, the sketch will probably have to be modified to work with
+  some other displays. In general, the lefthand  port drives the segments,
+  while the righthand port drives digit selection.
+
 -------------------------------------------------------------------------------
 
                          Call Progress Tone Generator
