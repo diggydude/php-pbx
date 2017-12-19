@@ -178,9 +178,6 @@ void loop()
   int reading = digitalRead(muxComIoPin);
   if ((millis() - lastChange) > dialTimeout) {
     if (digitCaptured) {
-#ifdef USE_DISPLAY
-      refreshDisplay();
-#endif
       digits[currentDigit] = count % 10;
       digitCaptured        = 0;
       count                = 0;
@@ -209,4 +206,7 @@ void loop()
     }
   }
   lastState = reading;
+#ifdef USE_DISPLAY
+  refreshDisplay();
+#endif
 } // loop
