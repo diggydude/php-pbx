@@ -28,8 +28,8 @@ struct Cadence {
 
 Cadence cadences[4] = {
   {65535, 0},     // dial
-  {500,   500},   // busy
   {2000,  4000},  // ringing
+  {500,   500},   // busy
   {250,   250}    // reorder
 };
 
